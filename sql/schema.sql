@@ -1,0 +1,14 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE TABLE IF NOT EXISTS users (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), email text UNIQUE NOT NULL, password_hash text NOT NULL, role text NOT NULL DEFAULT 'executive', created_at timestamptz DEFAULT now());
+CREATE TABLE IF NOT EXISTS companies (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), name text NOT NULL, domain text, industry text, created_at timestamptz DEFAULT now());
+CREATE TABLE IF NOT EXISTS clients (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), company_id uuid REFERENCES companies(id) ON DELETE CASCADE, name text NOT NULL, email text, status text DEFAULT 'active', created_at timestamptz DEFAULT now());
+CREATE TABLE IF NOT EXISTS projects (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), client_id uuid REFERENCES clients(id) ON DELETE SET NULL, name text NOT NULL, status text DEFAULT 'active', priority int DEFAULT 3, budget numeric(12,2) DEFAULT 0, progress int DEFAULT 0, due_date date, created_at timestamptz DEFAULT now());
+CREATE TABLE IF NOT EXISTS tasks (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), project_id uuid REFERENCES projects(id) ON DELETE CASCADE, title text NOT NULL, status text DEFAULT 'todo', assignee text, due_date date, created_at timestamptz DEFAULT now());
+CREATE TABLE IF NOT EXISTS invoices (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), client_id uuid REFERENCES clients(id) ON DELETE SET NULL, invoice_number text UNIQUE NOT NULL, amount numeric(12,2) NOT NULL, status text DEFAULT 'draft', due_date date, paid_at timestamptz, created_at timestamptz DEFAULT now());
+CREATE TABLE IF NOT EXISTS reports (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), kind text NOT NULL, title text NOT NULL, content jsonb NOT NULL, created_at timestamptz DEFAULT now());
+CREATE TABLE IF NOT EXISTS ai_memory (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), memory_type text NOT NULL, subject text NOT NULL, content text NOT NULL, metadata jsonb DEFAULT '{}', created_at timestamptz DEFAULT now());
+CREATE TABLE IF NOT EXISTS decisions (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), decision text NOT NULL, rationale text, outcome text, created_at timestamptz DEFAULT now());
+CREATE TABLE IF NOT EXISTS monitoring_checks (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), check_type text NOT NULL, target text NOT NULL, status text NOT NULL, details jsonb DEFAULT '{}', checked_at timestamptz DEFAULT now());
+CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
+CREATE INDEX IF NOT EXISTS idx_invoices_status ON invoices(status);
+CREATE INDEX IF NOT EXISTS idx_memory_type ON ai_memory(memory_type);

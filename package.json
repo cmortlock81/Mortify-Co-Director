@@ -1,0 +1,49 @@
+{
+  "name": "mortify-co-director",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-ready AI business co-director",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "node --watch server/src/index.js",
+    "dev:client": "vite --host 0.0.0.0 --config client/vite.config.js",
+    "start": "node server/src/index.js",
+    "test": "node --test",
+    "lint": "eslint .",
+    "db:migrate": "node server/src/db/migrate.js",
+    "db:seed": "node server/src/db/seed.js"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "bcryptjs": "latest",
+    "compression": "latest",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "express-rate-limit": "latest",
+    "helmet": "latest",
+    "ioredis": "latest",
+    "jsonwebtoken": "latest",
+    "morgan": "latest",
+    "node-cron": "latest",
+    "openai": "latest",
+    "pg": "latest",
+    "prom-client": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "vite": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "concurrently": "latest",
+    "eslint": "latest",
+    "supertest": "latest",
+    "@eslint/js": "latest",
+    "globals": "latest"
+  },
+  "license": "MIT",
+  "type": "module"
+}

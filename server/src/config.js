@@ -1,0 +1,2 @@
+import 'dotenv/config';
+export const config = { nodeEnv: process.env.NODE_ENV || 'development', port: Number(process.env.PORT || 8080), databaseUrl: process.env.DATABASE_URL || 'postgres://mortify:mortify_password@localhost:5432/mortify', redisUrl: process.env.REDIS_URL || 'redis://localhost:6379', jwtSecret: process.env.JWT_SECRET || 'dev-secret-change-me', openaiApiKey: process.env.OPENAI_API_KEY, openaiModel: process.env.OPENAI_MODEL || 'gpt-4.1-mini', corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173' };
