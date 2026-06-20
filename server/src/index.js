@@ -15,6 +15,6 @@ collectDefaultMetrics();
 const app = express();
 app.use(helmet({ contentSecurityPolicy: false })); app.use(cors({ origin: config.corsOrigin, credentials: true })); app.use(compression()); app.use(express.json({ limit: '1mb' })); app.use(morgan('combined')); app.use(rateLimit({ windowMs: 60_000, limit: 300 }));
 app.get('/health', (_req,res)=>res.json({ status:'ok', service:'mortify-co-director' })); app.get('/metrics', async (_req,res)=>{ res.set('Content-Type', register.contentType); res.end(await register.metrics()); }); app.use('/api', api);
-const dist = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../client/dist'); app.use(express.static(dist)); app.get('*', (_req,res)=>res.sendFile(path.join(dist,'index.html')));
+const dist = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../client/dist'); app.use(express.static(dist)); app.get('/{*splat}', (_req,res)=>res.sendFile(path.join(dist,'index.html')));
 cron.schedule('0 7 * * *', () => generateDirectorReport('daily_briefing').catch(console.error));
 app.listen(config.port, () => console.log(`Mortify Co-Director listening on ${config.port}`));
