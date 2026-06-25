@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Hurghada Property PWA icon">
+  <rect width="512" height="512" rx="112" fill="#007aff"/>
+  <rect x="96" y="118" width="320" height="276" rx="56" fill="#ffffff"/>
+  <path d="M144 250 256 160l112 90v112a20 20 0 0 1-20 20h-64v-86h-56v86h-64a20 20 0 0 1-20-20V250Z" fill="#007aff"/>
+  <path d="M124 246 256 140l132 106" fill="none" stroke="#007aff" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

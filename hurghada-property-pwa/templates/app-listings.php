@@ -1,0 +1,4 @@
+<?php if (!defined('ABSPATH')) { exit; } $listings = HPPWA_Plugin::instance()->listings; ?>
+<header class="hppwa-page-head"><h1>Listings</h1></header>
+<form class="hppwa-filters" method="get"><input name="bedrooms" placeholder="Bedrooms" value="<?php echo esc_attr($_GET['bedrooms'] ?? ''); ?>"><input name="min_price" placeholder="Min price" value="<?php echo esc_attr($_GET['min_price'] ?? ''); ?>"><input name="max_price" placeholder="Max price" value="<?php echo esc_attr($_GET['max_price'] ?? ''); ?>"><input name="location" placeholder="Location/development" value="<?php echo esc_attr($_GET['location'] ?? ''); ?>"><button>Filter</button></form>
+<section><?php $q = $listings->query(wp_unslash($_GET)); if ($q->have_posts()) : while ($q->have_posts()) : $q->the_post(); $p = $listings->property_data(get_the_ID()); include HPPWA_DIR . 'templates/part-card.php'; endwhile; else : ?><p class="hppwa-card">No listings found.</p><?php endif; wp_reset_postdata(); ?></section>

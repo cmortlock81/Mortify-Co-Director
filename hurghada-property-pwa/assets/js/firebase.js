@@ -1,0 +1,1 @@
+(function(){if(!window.HPPWA||!HPPWA.firebaseEnabled){return;}window.HPPWARegisterFirebaseToken=function(token){const data=new FormData();data.append('action','hppwa_register_token');data.append('nonce',HPPWA.nonce);data.append('token',token);fetch(HPPWA.ajaxUrl,{method:'POST',credentials:'same-origin',body:data});};})();

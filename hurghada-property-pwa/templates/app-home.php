@@ -1,0 +1,3 @@
+<?php if (!defined('ABSPATH')) { exit; } $s = HPPWA_Plugin::settings(); ?>
+<header class="hppwa-hero"><?php if ($s['logo_url']) : ?><img src="<?php echo esc_url($s['logo_url']); ?>" alt="<?php echo esc_attr($s['app_name']); ?>"><?php endif; ?><h1><?php echo esc_html($s['app_name']); ?></h1><p>Mobile-first Hurghada property search.</p><a class="hppwa-button" href="<?php echo esc_url(home_url('/app/listings/')); ?>">Browse Listings</a></header>
+<section class="hppwa-card"><h2>Featured Properties</h2><?php $q = HPPWA_Plugin::instance()->listings->query([]); while ($q->have_posts()) : $q->the_post(); $p = HPPWA_Plugin::instance()->listings->property_data(get_the_ID()); include HPPWA_DIR . 'templates/part-card.php'; endwhile; wp_reset_postdata(); ?></section>

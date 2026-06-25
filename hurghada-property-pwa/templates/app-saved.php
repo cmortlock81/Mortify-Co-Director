@@ -1,0 +1,1 @@
+<?php if (!defined('ABSPATH')) { exit; } ?><header class="hppwa-page-head"><h1>Saved Properties</h1><p>Your saved homes are stored on this device.</p></header><section id="hppwa-saved-list" class="hppwa-saved-list"></section>
