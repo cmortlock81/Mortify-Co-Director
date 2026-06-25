@@ -3,7 +3,7 @@
  * Plugin Name: Hurghada Property PWA
  * Description: Standalone mobile PWA app shell for Houzez property listings on hurghadaapartmentsales.com.
  * Version: 1.0.0
- * Author: Hurghada Apartment Sales
+ * Author: Mortify Software
  * Text Domain: hurghada-property-pwa
  * Requires PHP: 8.0
  */
