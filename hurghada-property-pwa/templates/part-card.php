@@ -1,0 +1,3 @@
+<article class="hppwa-property-card" data-property='<?php echo esc_attr(wp_json_encode($p)); ?>'>
+<img src="<?php echo esc_url($p['image']); ?>" alt="<?php echo esc_attr($p['title']); ?>"><div><strong><?php echo esc_html($p['title']); ?></strong><span class="price"><?php echo esc_html($p['price']); ?></span><p><?php echo esc_html($p['location']); ?></p><p><?php echo esc_html(trim($p['bedrooms'].' bed · '.$p['bathrooms'].' bath · '.$p['area'])); ?></p><div class="actions"><a class="hppwa-button" href="<?php echo esc_url($p['url']); ?>">View Details</a><button class="hppwa-save" type="button">Save</button><a class="hppwa-whatsapp" data-title="<?php echo esc_attr($p['title']); ?>" data-url="<?php echo esc_url($p['url']); ?>" href="#">WhatsApp</a></div></div>
+</article>
