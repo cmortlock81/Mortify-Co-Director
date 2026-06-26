@@ -36,7 +36,7 @@ final class HPPWA_Routes {
     }
     public function render(): void {
         $route = get_query_var('hppwa_route');
-        if (!$route || in_array($route, ['manifest', 'sw'], true)) { return; }
+        if (!$route || in_array($route, ['manifest', 'sw', 'offline'], true)) { return; }
         status_header(200); nocache_headers();
         $settings = HPPWA_Plugin::settings();
         $template = HPPWA_DIR . 'templates/app-' . ($route === 'home' ? 'home' : sanitize_file_name($route)) . '.php';

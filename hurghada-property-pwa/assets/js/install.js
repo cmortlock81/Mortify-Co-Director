@@ -11,6 +11,18 @@
     navigator.serviceWorker.register(config.serviceWorkerUrl, { scope: '/' }).catch(function () {});
   }
 
+  function text(value, fallback) {
+    return String(value || fallback || '');
+  }
+
+  function button(className, label) {
+    const element = document.createElement('button');
+    element.type = 'button';
+    element.className = className;
+    element.textContent = label;
+    return element;
+  }
+
   function createBanner(mode, promptEvent) {
     if (document.querySelector('.hppwa-install')) {
       return;
@@ -21,12 +33,34 @@
     banner.setAttribute('role', 'dialog');
     banner.setAttribute('aria-live', 'polite');
 
-    const title = config.appName || 'Hurghada Property PWA';
-    const iosHelp = 'Tap Share, then Add to Home Screen.';
-    const body = mode === 'ios' ? iosHelp : 'Install the mobile property app for faster access.';
-    const primary = mode === 'android' ? '<button type="button" class="hppwa-install__install">Install</button>' : '<a class="hppwa-install__open" href="' + (config.startUrl || '/app/') + '">Open App</a>';
+    const copy = document.createElement('div');
+    const title = document.createElement('strong');
+    title.textContent = text(config.appName, 'Hurghada Property PWA');
 
-    banner.innerHTML = '<div><strong>' + title + '</strong><span>' + body + '</span></div><div class="hppwa-install__actions">' + primary + '<button type="button" class="hppwa-install__dismiss" aria-label="Dismiss install prompt">Not now</button></div>';
+    const body = document.createElement('span');
+    body.textContent = mode === 'ios'
+      ? 'Tap Share, then Add to Home Screen.'
+      : 'Install the mobile property app for faster access.';
+
+    copy.append(title, body);
+
+    const actions = document.createElement('div');
+    actions.className = 'hppwa-install__actions';
+
+    if (mode === 'android' && promptEvent) {
+      actions.appendChild(button('hppwa-install__install', 'Install'));
+    } else {
+      const open = document.createElement('a');
+      open.className = 'hppwa-install__open';
+      open.href = text(config.startUrl, '/app/');
+      open.textContent = 'Open App';
+      actions.appendChild(open);
+    }
+
+    const dismiss = button('hppwa-install__dismiss', 'Not now');
+    dismiss.setAttribute('aria-label', 'Dismiss install prompt');
+    actions.appendChild(dismiss);
+    banner.append(copy, actions);
     document.body.appendChild(banner);
 
     banner.addEventListener('click', function (event) {

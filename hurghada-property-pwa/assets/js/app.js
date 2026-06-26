@@ -1,13 +1,69 @@
 (function () {
   const config = window.HPPWA || {};
   const savedKey = 'hppwa_saved_properties';
-  const readSaved = () => JSON.parse(localStorage.getItem(savedKey) || '[]');
-  const writeSaved = (items) => localStorage.setItem(savedKey, JSON.stringify(items));
+
+  function readSaved() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(savedKey) || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function writeSaved(items) {
+    localStorage.setItem(savedKey, JSON.stringify(items));
+  }
 
   function whatsappUrl(title, url) {
     const template = config.template || 'Hi, I am interested in {title} ({url}).';
     const message = template.replace('{title}', title || document.title).replace('{url}', url || window.location.href);
     return 'https://wa.me/' + (config.whatsapp || '') + '?text=' + encodeURIComponent(message);
+  }
+
+  function appendText(parent, tagName, value, className) {
+    const element = document.createElement(tagName);
+    if (className) {
+      element.className = className;
+    }
+    element.textContent = value || '';
+    parent.appendChild(element);
+    return element;
+  }
+
+  function renderSavedProperty(property) {
+    const article = document.createElement('article');
+    article.className = 'hppwa-property-card';
+
+    const image = document.createElement('img');
+    image.src = property.image || '';
+    image.alt = property.title || '';
+    article.appendChild(image);
+
+    const content = document.createElement('div');
+    appendText(content, 'strong', property.title || 'Saved property');
+    appendText(content, 'span', property.price || '', 'price');
+    appendText(content, 'p', property.location || '');
+
+    const actions = document.createElement('div');
+    actions.className = 'actions';
+
+    const details = document.createElement('a');
+    details.className = 'hppwa-button';
+    details.href = property.url || '#';
+    details.textContent = 'View Details';
+    actions.appendChild(details);
+
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'hppwa-save-remove';
+    remove.dataset.id = property.id || '';
+    remove.textContent = 'Remove';
+    actions.appendChild(remove);
+
+    content.appendChild(actions);
+    article.appendChild(content);
+    return article;
   }
 
   document.addEventListener('click', function (event) {
@@ -33,9 +89,16 @@
   const savedList = document.getElementById('hppwa-saved-list');
   if (savedList) {
     const items = readSaved();
-    savedList.innerHTML = items.length
-      ? items.map((property) => `<article class="hppwa-property-card"><img src="${property.image}" alt=""><div><strong>${property.title}</strong><span class="price">${property.price || ''}</span><p>${property.location || ''}</p><div class="actions"><a class="hppwa-button" href="${property.url}">View Details</a><button class="hppwa-save-remove" data-id="${property.id}">Remove</button></div></div></article>`).join('')
-      : '<div class="hppwa-card">No saved properties yet.</div>';
+    savedList.replaceChildren();
+
+    if (items.length) {
+      items.forEach((property) => savedList.appendChild(renderSavedProperty(property)));
+    } else {
+      const empty = document.createElement('div');
+      empty.className = 'hppwa-card';
+      empty.textContent = 'No saved properties yet.';
+      savedList.appendChild(empty);
+    }
 
     savedList.addEventListener('click', function (event) {
       const removeButton = event.target.closest('.hppwa-save-remove');
